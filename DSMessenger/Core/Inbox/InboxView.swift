@@ -8,19 +8,24 @@
 import SwiftUI
 
 struct InboxView: View {
+    @State private var isShowingMessgaeView: Bool = false
     var body: some View {
         NavigationStack {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 ActiveNowUsersView()
                 List {
                     ForEach(0 ... 10, id: \.self) { message in
                         InboxRowView()
                     }
                 }
+                .menuIndicator(Visibility.hidden)
                 .listStyle(PlainListStyle())
                 .frame(height: UIScreen.main.bounds.height - 120,
                        alignment: .center)
             }
+            .fullScreenCover(isPresented: $isShowingMessgaeView, content: {
+                NewMessageView()
+            })
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack {
@@ -33,7 +38,7 @@ struct InboxView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        print("New messege")
+                        isShowingMessgaeView.toggle()
                     } label: {
                         Image(systemName: "square.and.pencil.circle.fill")
                             .resizable()
