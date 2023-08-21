@@ -15,10 +15,7 @@ struct ActiveNowUsersView: View {
                     VStack {
                         ZStack(alignment: .bottomTrailing) {
                             // image
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .frame(width: 64, height: 64)
-                                .foregroundColor(Color(.systemGray4))
+                            CircleProfileImageView(user: User.mockUser, size: .medium)
                             // online indicator
                             ZStack {
                                 Circle()
