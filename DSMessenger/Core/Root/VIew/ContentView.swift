@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel = ContentViewModel()
+    
     var body: some View {
-        VStack {
-            ProfileView(user: User.mockUser)
+        
+        Group {
+            if viewModel.userSession != nil {
+                InboxView()
+            } else {
+                LoginView()
+            }
         }
-        .padding()
     }
 }
 
