@@ -18,7 +18,7 @@ class ContentViewModel: ObservableObject {
     
     // some Combine staff
     private func setupAuthSubscribers() {
-        AuthService().$userSession.sink { [weak self] userSessionFromFireBaseAuth in
+        AuthService.shared.$userSession.sink { [weak self] userSessionFromFireBaseAuth in
             self?.userSession = userSessionFromFireBaseAuth
         }
         .store(in: &cancellables)

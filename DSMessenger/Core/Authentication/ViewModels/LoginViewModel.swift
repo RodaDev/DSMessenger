@@ -12,6 +12,6 @@ class LoginViewModel: ObservableObject {
     @Published var password = ""
     
     func login() async throws {
-        try await AuthService().login(email: email, password: password)
+        try await AuthService.shared.login(email: email, password: password)
     }
 }
