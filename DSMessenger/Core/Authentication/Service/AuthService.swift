@@ -14,8 +14,12 @@ class AuthService {
     @Published var userSession: FirebaseAuth.User?
     
     static let shared = AuthService()
+    
     init() {
         self.userSession = Auth.auth().currentUser
+        Task {
+            try await UserService.shared.fetchCurrentUser()
+        }
         print("DEBUG: User session id = \(userSession?.uid ?? "-")")
     }
     
