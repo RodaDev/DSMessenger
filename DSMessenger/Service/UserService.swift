@@ -14,6 +14,7 @@ class UserService {
     @Published var currentUser: User?
     static let shared = UserService()
     
+    @MainActor
     func fetchCurrentUser() async throws {
         guard let uid = Auth.auth().currentUser?.uid else {
             return

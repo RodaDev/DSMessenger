@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InboxView: View {
     @State private var isShowingMessgaeView: Bool = false
-    @State private var user = User.mockUser
+    @StateObject var viewModel = InboxViewModel()
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
@@ -33,8 +33,8 @@ struct InboxView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack {
-                        NavigationLink(value: user) {
-                            CircleProfileImageView(user: user, size: .xSmall)
+                        NavigationLink(value: viewModel.currentUser) {
+                            CircleProfileImageView(user: viewModel.currentUser, size: .xSmall)
                         }
                         Text("Chats")
                             .font(.title)
