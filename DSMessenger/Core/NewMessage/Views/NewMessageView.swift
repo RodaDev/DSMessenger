@@ -9,7 +9,10 @@ import SwiftUI
 
 struct NewMessageView: View {
     @State private var searchText = ""
+    @StateObject private var viewModel = NewMessageViewModel()
+    
     @Environment(\.dismiss) var dismissAction
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -24,10 +27,10 @@ struct NewMessageView: View {
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                ForEach(0 ... 10, id: \.self) { user in
+                ForEach(viewModel.users) { user in
                     HStack {
-                        CircleProfileImageView(user: User.mockUser, size: .small)
-                        Text("Laura Palmer")
+                        CircleProfileImageView(user: user, size: .small)
+                        Text(user.fullName)
                             .font(.subheadline)
                             .fontWeight(.semibold)
                         Spacer()
