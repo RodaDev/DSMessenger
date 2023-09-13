@@ -23,7 +23,6 @@ struct Message: Identifiable, Codable, Hashable {
         return messageId ?? NSUUID().uuidString
     }
     
-    
     var isFromCurrentUser: Bool {
         return fromId == Auth.auth().currentUser?.uid
     }
