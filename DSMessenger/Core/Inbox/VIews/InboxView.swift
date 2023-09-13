@@ -10,6 +10,9 @@ import SwiftUI
 struct InboxView: View {
     @State private var isShowingMessgaeView: Bool = false
     @StateObject var viewModel = InboxViewModel()
+    @State private var selectedUser: User?
+    @State private var isShawnChat = false
+    
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
@@ -24,11 +27,19 @@ struct InboxView: View {
                 .frame(height: UIScreen.main.bounds.height - 120,
                        alignment: .center)
             }
+            .onChange(of: selectedUser, perform: { user in
+                isShawnChat = user != nil
+            })
             .navigationDestination(for: User.self, destination: { user in
                 ProfileView(user: user)
             })
+            .navigationDestination(isPresented: $isShawnChat, destination: {
+                if let user = selectedUser {
+                    ChatView(user: user)
+                }
+            })
             .fullScreenCover(isPresented: $isShowingMessgaeView, content: {
-                NewMessageView()
+                NewMessageView(selectedUser: $selectedUser)
             })
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
