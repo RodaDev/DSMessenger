@@ -11,6 +11,7 @@ struct NewMessageView: View {
     @State private var searchText = ""
     @StateObject private var viewModel = NewMessageViewModel()
     @Binding var selectedUser: User?
+    
     @Environment(\.dismiss) var dismissAction
     
     var body: some View {
