@@ -8,12 +8,19 @@
 import SwiftUI
 
 struct CHatMessageCell: View {
-    let isFromCurrentUser: Bool
+    let message: Message
+    private var messageText: String {
+        message.messageText
+    }
+    private var isFromCurrentUser: Bool {
+        message.isFromCurrentUser
+    }
+    
     var body: some View {
         HStack {
             if isFromCurrentUser {
                 Spacer()
-                Text("This is a test text message long long. How that will be?")
+                Text(messageText)
                     .font(.subheadline)
                     .padding()
                     .background(Color(.systemBlue))
@@ -24,7 +31,7 @@ struct CHatMessageCell: View {
             } else {
                 HStack(alignment: .bottom, spacing: 8) {
                     CircleProfileImageView(user: User.mockUser, size: .xxSmall)
-                    Text("This is a test text message, long long. How that will be? Is it ok or not?")
+                    Text(messageText)
                         .font(.subheadline)
                         .padding()
                         .background(Color(.systemGray5))
@@ -41,8 +48,8 @@ struct CHatMessageCell: View {
     }
 }
 
-struct CHatMessageCell_Previews: PreviewProvider {
-    static var previews: some View {
-        CHatMessageCell(isFromCurrentUser: false)
-    }
-}
+//struct CHatMessageCell_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CHatMessageCell(isFromCurrentUser: false)
+//    }
+//}

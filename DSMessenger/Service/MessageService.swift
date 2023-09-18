@@ -34,4 +34,27 @@ struct MessageService {
         currentUserRef.setData(messageData)
         chatPartnerRef.document(messageId).setData(messageData)
     }
+    
+    static func observeMessages(chatPartner: User, completion: @escaping ([Message]) -> Void) {
+        guard let currentUId = Auth.auth().currentUser?.uid else {
+            return
+        }
+        let chatPartnerId = chatPartner.id
+        let query = messagesCollection
+            .document(currentUId)
+            .collection(chatPartnerId)
+            .order(by: "timestamp",
+                   descending: false)
+        query.addSnapshotListener { snapshot, error in
+            let changes = snapshot?.documentChanges.filter ({ $0.type == .added })
+            guard let unwrChanges = changes else {
+                return
+            }
+            guard var messages = changes?.compactMap({ try? $0.document.data(as: Message.self) }) else { return }
+            for (index, message) in messages.enumerated() where message.fromId != currentUId {
+                messages[index].user = chatPartner
+            }
+            completion(messages)
+        }
+    }
 }
