@@ -50,7 +50,7 @@ struct MessageService {
             guard let unwrChanges = changes else {
                 return
             }
-            guard var messages = changes?.compactMap({ try? $0.document.data(as: Message.self) }) else { return }
+            var messages = unwrChanges.compactMap({ try? $0.document.data(as: Message.self) })
             for (index, message) in messages.enumerated() where message.fromId != currentUId {
                 messages[index].user = chatPartner
             }
