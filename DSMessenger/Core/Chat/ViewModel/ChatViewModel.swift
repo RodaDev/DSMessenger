@@ -10,20 +10,21 @@ import Foundation
 class ChatViewModel: ObservableObject {
     @Published var messageText = ""
     @Published var messages = [Message]()
-    let user: User
+    
+    let service: ChatService
     
     init(user: User) {
-        self.user = user
+        self.service = ChatService(chatPartner: user)
         observeMessages()
     }
     
     func observeMessages() {
-        MessageService.observeMessages(chatPartner: user) { addedMessages in
+        service.observeMessages { addedMessages in
             self.messages.append(contentsOf: addedMessages)
         }
     }
     
     func sendMessage() {
-        MessageService.sendMessage(messageText, to: user)
+        service.sendMessage(messageText)
     }
 }
