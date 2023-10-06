@@ -32,4 +32,12 @@ class UserService {
         }
         return users
     }
+    
+    static func fetchUser(with id: String, completion: @escaping (User) -> Void) {
+        Constants.firestore.usersCollection.document(id).getDocument { snapshot, error in
+            if let user = try? snapshot?.data(as: User.self) {
+                completion(user)
+            }
+        }
+    }
 }

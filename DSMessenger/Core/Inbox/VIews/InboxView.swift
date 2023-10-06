@@ -18,8 +18,8 @@ struct InboxView: View {
             ScrollView(showsIndicators: false) {
                 ActiveNowUsersView()
                 List {
-                    ForEach(0 ... 10, id: \.self) { message in
-                        InboxRowView()
+                    ForEach(viewModel.recentMessages) { message in
+                        InboxRowView(message: message)
                     }
                 }
                 .menuIndicator(Visibility.hidden)

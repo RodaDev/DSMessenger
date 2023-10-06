@@ -22,6 +22,17 @@ struct ChatService {
             .collection(chatPartnerId)
             .document()
         let chatPartnerRef = Constants.firestore.messagesCollection.document(chatPartnerId).collection(currentUId)
+        
+        //recent-message
+        let recentCurrentUserRef = Constants.firestore.messagesCollection
+            .document(currentUId)
+            .collection(Constants.collectionName.recentMessages)
+            .document(chatPartnerId)
+        let recentPartnerUserRef = Constants.firestore.messagesCollection
+            .document(chatPartnerId)
+            .collection(Constants.collectionName.recentMessages)
+            .document(currentUId)
+        
         let messageId = currentUserRef.documentID
         let message = Message(messageId: messageId,
                               fromId: currentUId,
@@ -33,6 +44,9 @@ struct ChatService {
         }
         currentUserRef.setData(messageData)
         chatPartnerRef.document(messageId).setData(messageData)
+        
+        recentCurrentUserRef.setData(messageData)
+        recentPartnerUserRef.setData(messageData)
     }
     
     func observeMessages(completion: @escaping ([Message]) -> Void) {
@@ -43,7 +57,7 @@ struct ChatService {
         let query = Constants.firestore.messagesCollection
             .document(currentUId)
             .collection(chatPartnerId)
-            .order(by: "timestamp",
+            .order(by: Constants.field.timestamp,
                    descending: false)
         query.addSnapshotListener { snapshot, error in
             let changes = snapshot?.documentChanges.filter ({ $0.type == .added })
