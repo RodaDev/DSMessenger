@@ -30,5 +30,9 @@ struct Message: Identifiable, Codable, Hashable {
     var chatPartnerId: String {
         return isFromCurrentUser ? toId : fromId
     }
+    
+    var timeStampString: String {
+        timestamp.dateValue().timeStampString()
+    }
 }
 

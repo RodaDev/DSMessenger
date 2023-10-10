@@ -24,7 +24,7 @@ struct InboxRowView: View {
                     .frame(width: UIScreen.main.bounds.width - 220, alignment: .leading)
             }
             HStack {
-                Text("Yesterday")
+                Text(message.timeStampString)
                 Image(systemName: "chevron.right")
             }
             .font(.caption)

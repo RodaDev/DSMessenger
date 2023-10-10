@@ -15,20 +15,31 @@ struct InboxView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView(showsIndicators: false) {
+            List {
                 ActiveNowUsersView()
-                List {
-                    ForEach(viewModel.recentMessages) { message in
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets())
+                    .padding(.vertical)
+                    .padding(.horizontal, 4)
+                ForEach(viewModel.recentMessages) { message in
+                    // lifehack to hide navigationlink arrow
+                    ZStack {
+                        NavigationLink(value: message) {
+                            EmptyView()
+                        }.opacity(0.0)
                         InboxRowView(message: message)
                     }
                 }
-                .menuIndicator(Visibility.hidden)
-                .listStyle(PlainListStyle())
-                .frame(height: UIScreen.main.bounds.height - 120,
-                       alignment: .center)
             }
+            .menuIndicator(Visibility.hidden)
+            .listStyle(PlainListStyle())
             .onChange(of: selectedUser, perform: { user in
                 isShawnChat = user != nil
+            })
+            .navigationDestination(for: Message.self, destination: { message in
+                if let user = message.user {
+                    ChatView(user: user)
+                }
             })
             .navigationDestination(for: User.self, destination: { user in
                 ProfileView(user: user)
